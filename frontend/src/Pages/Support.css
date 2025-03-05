@@ -1,0 +1,53 @@
+.support-container {
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+  background-color: #000;
+  height: 100vh; /* Set the height to 100% of the viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center the content */
+}
+
+h1 {
+  font-size: 2rem;
+  color: #fff;
+  text-align: center;
+}
+
+p {
+  font-size: 1rem;
+  margin: 15px 0;
+}
+
+.contact-info {
+  margin-top: 20px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+address {
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.assistance-options {
+  margin-top: 30px;
+}
+
+.assistance-options h2 {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.assistance-options ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.assistance-options li {
+  margin: 10px 0;
+}

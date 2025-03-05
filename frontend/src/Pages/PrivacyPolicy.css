@@ -1,0 +1,32 @@
+.privacy-policy-container {
+  background-color: #000;
+  color: #fff;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.privacy-policy-container h1,
+.privacy-policy-container h2,
+.privacy-policy-container h3,
+.privacy-policy-container h4 {
+  color: #fff;
+}
+
+.privacy-policy-container a {
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.privacy-policy-container a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
