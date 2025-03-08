@@ -164,6 +164,8 @@ exports.createHistory = async (req, res) => {
       });
     }
 
+    console.log(req.body);
+
     const [user, premiumPlan, order] = await Promise.all([
       User.findById(req.body.userId),
       PremiumPlan.findById(req.body.premiumPlanId),
@@ -187,6 +189,13 @@ exports.createHistory = async (req, res) => {
       return res.json({
         status: false,
         message: "Order does not found!",
+      });
+    }
+    // console.log(user._id.equals(order.user_id));
+    if (!user._id.equals(order.user_id)) {
+      return res.json({
+        status: false,
+        message: "User does not match with order!",
       });
     }
 

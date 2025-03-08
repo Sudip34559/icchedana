@@ -22,7 +22,7 @@ exports.createOrder = async (req, res) => {
     const user = await User.find({
       _id: userId,
     });
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -50,26 +50,52 @@ exports.createOrder = async (req, res) => {
     //   created_at: Math.floor(Date.now() / 1000),
     // };
 
+    const oldOrder = await Order.findOne({
+      user_id: userId,
+      status: { $ne: "paid" },
+    }).sort({ createdAt: 1 }); // This gets the oldest unpaid order
+    console.log("oldOrder", oldOrder);
     if (razorPay) {
-      const order = new Order({
-        order_id: razorPay.id,
-        user_id: userId,
-        entity: razorPay.entity,
-        amount: razorPay.amount,
-        currency: razorPay.currency,
-        receipt: razorPay.receipt,
-        status: razorPay.status,
-        attempts: razorPay.attempts || 0,
-      });
+      if (oldOrder) {
+        // Directly update document fields
+        oldOrder.order_id = razorPay.id;
+        oldOrder.user_id = userId;
+        oldOrder.entity = razorPay.entity;
+        oldOrder.amount = razorPay.amount;
+        oldOrder.currency = razorPay.currency;
+        oldOrder.receipt = razorPay.receipt;
+        oldOrder.status = razorPay.status;
+        oldOrder.attempts = (oldOrder.attempts || 0) + 1; // Handle if attempts is null/undefined initially
 
-      await order.save();
+        await oldOrder.save(); // Save changes to DB
 
-      res.status(200).json({
-        success: true,
-        message: "Razorpay order created successfully",
-        razorPay,
-        order,
-      });
+        res.status(200).json({
+          success: true,
+          message: "Razorpay order updated successfully",
+          razorPay,
+          order: oldOrder,
+        });
+      } else {
+        const order = new Order({
+          order_id: razorPay.id,
+          user_id: userId,
+          entity: razorPay.entity,
+          amount: razorPay.amount,
+          currency: razorPay.currency,
+          receipt: razorPay.receipt,
+          status: razorPay.status,
+          attempts: razorPay.attempts || 0,
+        });
+        console.log(order);
+        await order.save();
+
+        res.status(200).json({
+          success: true,
+          message: "Razorpay order created successfully",
+          razorPay,
+          order,
+        });
+      }
     } else {
       res.status(500).json({
         success: false,
