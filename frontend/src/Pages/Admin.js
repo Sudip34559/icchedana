@@ -11,6 +11,7 @@ import User from "../Component/Table/User";
 import Region from "../Component/Table/Region";
 import Genre from "../Component/Table/Genre";
 import Movie from "../Component/Table/Movie";
+import Cartoon from "../Component/Table/Cartoon";
 import TvSeries from "../Component/Table/TvSeries";
 import SeriesForm from "../Component/Dialog/SeriesForm";
 import Profile from "../Pages/Profile";
@@ -43,6 +44,19 @@ import SeriesManual from "../Component/Dialog/SeriesManual";
 import LiveTvDialogue from "../Component/Dialog/LiveTvDialogue";
 import { useSelector } from "react-redux";
 import UserRaisedTicket from "../Component/Table/UserRaisedTicket";
+import CartoonForm from "../Component/Dialog/CartoonForm";
+import CartoonTrailerForm from "../Component/Dialog/CartoonTrailerForm";
+import CartoonTrailer from "../Component/Table/CartoonTrailer";
+import CartoonCast from "../Component/Table/CartoonCast";
+import CartoonCastForm from "../Component/Dialog/CartoonCastForm";
+import Music from "../Component/Table/Music";
+import CartoonDetails from "../Component/DetailsPage/CartoonDetails";
+import MusicDetails from "../Component/DetailsPage/MusicDetails";
+import MusicForm from "../Component/Dialog/MusicForm";
+import MusicTrailer from "../Component/Table/MusicTrailer";
+import MusicCast from "../Component/Table/MusicCast";
+import MusicTrailerForm from "../Component/Dialog/MusicTrailerForm";
+import MusicCastForm from "../Component/Dialog/MusicCastForm";
 
 const Admin = () => {
   const location = useRouteMatch();
@@ -58,7 +72,7 @@ const Admin = () => {
       history.location.pathname === "/admin/"
     ) {
       history.push("/admin/dashboard");
-    } 
+    }
   }, []);
 
   return (
@@ -73,7 +87,11 @@ const Admin = () => {
             component={Dashboard}
           />
           <Route exact path={`${location.path}/user`} component={User} />
-          <Route exact path={`${location.path}/raisedTicket`} component={UserRaisedTicket} />
+          <Route
+            exact
+            path={`${location.path}/raisedTicket`}
+            component={UserRaisedTicket}
+          />
           <Route
             exact
             path={`${location.path}/user/history`}
@@ -81,6 +99,8 @@ const Admin = () => {
           />
 
           <Route exact path={`${location.path}/movie`} component={Movie} />
+          <Route exact path={`${location.path}/cartoon`} component={Cartoon} />
+          <Route exact path={`${location.path}/music`} component={Music} />
           <Route
             exact
             path={`${location.path}/web_series`}
@@ -97,6 +117,17 @@ const Admin = () => {
             exact
             path={`${location.path}/movie/trailer`}
             component={Trailer}
+          />
+
+          <Route
+            exact
+            path={`${location.path}/cartoon/trailer`}
+            component={CartoonTrailer}
+          />
+          <Route
+            exact
+            path={`${location.path}/music/trailer`}
+            component={MusicTrailer}
           />
           <Route
             exact
@@ -145,6 +176,16 @@ const Admin = () => {
           />
           <Route
             exact
+            path={`${location.path}/cartoon/cast`}
+            component={CartoonCast}
+          />
+          <Route
+            exact
+            path={`${location.path}/music/cast`}
+            component={MusicCast}
+          />
+          <Route
+            exact
             path={`${location.path}/web_series/cast`}
             component={SeriesCast}
           />
@@ -152,6 +193,16 @@ const Admin = () => {
             exact
             path={`${location.path}/cast/cast_form`}
             component={TeamMemberForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/cartoon/cast_form`}
+            component={CartoonCastForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/music/cast_form`}
+            component={MusicCastForm}
           />
           <Route
             exact
@@ -166,6 +217,16 @@ const Admin = () => {
           />
           <Route
             exact
+            path={`${location.path}/cartoon/cartoon_details`}
+            component={CartoonDetails}
+          />
+          <Route
+            exact
+            path={`${location.path}/music/music_details`}
+            component={MusicDetails}
+          />
+          <Route
+            exact
             path={`${location.path}/movie/movie_form`}
             component={MovieDialog}
           />
@@ -173,6 +234,16 @@ const Admin = () => {
             exact
             path={`${location.path}/movie/movie_manual`}
             component={MovieForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/cartoon/cartoon_form`}
+            component={CartoonForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/music/music_form`}
+            component={MusicForm}
           />
 
           <Route
@@ -195,6 +266,16 @@ const Admin = () => {
             exact
             path={`${location.path}/series_trailer/trailer_form`}
             component={SeriesTrailerForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/cartoon_trailer/trailer_form`}
+            component={CartoonTrailerForm}
+          />
+          <Route
+            exact
+            path={`${location.path}/music_trailer/trailer_form`}
+            component={MusicTrailerForm}
           />
           <Route
             exact

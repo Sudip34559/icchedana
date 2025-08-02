@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import $ from "jquery";
 import logo from "../assets/images/logo.png";
 //MUI
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 //react-router-dom
 import { NavLink, useHistory } from "react-router-dom";
 
@@ -19,6 +19,8 @@ import liveTv from "../assets/images/liveTv.png";
 import dashBoard from "../assets/images/dashboard.png";
 import User from "../assets/images/User.png";
 import movie from "../assets/images/movie.png";
+import cartoon from "../assets/images/cartoon.png";
+import music from "../assets/images/music.png";
 import webSires from "../assets/images/Web Series.png";
 import genre from "../assets/images/Genre.png";
 import region from "../assets/images/Region.png";
@@ -150,12 +152,26 @@ const Sidebar = () => {
                   </NavLink>
                 </li>
                 <li>
+                  <NavLink to="/admin/cartoon" className={`${classes.navLink}`}>
+                    {/* className="iq-waves-effect" */}
+                    <img src={cartoon} width="30px" height="30px" />
+                    <span className="pl-2">Cartoon</span>
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink
                     to="/admin/web_series"
                     className={`${classes.navLink}`}
                   >
                     <img src={webSires} width="25px" height="25px" />
                     <span className="pl-2">Web Series</span>
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/admin/music" className={`${classes.navLink}`}>
+                    {/* className="iq-waves-effect" */}
+                    <img src={music} width="30px" height="30px" />
+                    <span className="pl-2">Music</span>
                   </NavLink>
                 </li>
 

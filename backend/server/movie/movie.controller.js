@@ -58,13 +58,24 @@ exports.store = async (req, res) => {
       !req.body.link ||
       !req.body.trailerVideoUrl
     ) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!" });
     }
 
-    const [region, genre] = await Promise.all([Region.findById(req.body.region), Genre.findById(req.body.genre)]);
+    const [region, genre] = await Promise.all([
+      Region.findById(req.body.region),
+      Genre.findById(req.body.genre),
+    ]);
 
-    if (!region) return res.status(200).json({ status: false, message: "Region does not found!" });
-    if (!genre) return res.status(200).json({ status: false, message: "Genre does not found!" });
+    if (!region)
+      return res
+        .status(200)
+        .json({ status: false, message: "Region does not found!" });
+    if (!genre)
+      return res
+        .status(200)
+        .json({ status: false, message: "Genre does not found!" });
 
     const movie = new Movie();
     movie.videoType = req.body.videoType;
@@ -76,7 +87,9 @@ exports.store = async (req, res) => {
     movie.year = req.body.year;
     movie.description = req.body.description;
     movie.type = req.body.type;
-    movie.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+    movie.date = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
     movie.region = region._id;
     movie.media_type = "movie";
     movie.updateType = 1;
@@ -117,7 +130,9 @@ exports.store = async (req, res) => {
     });
 
     //New release movie related notification.....
-    const userId = await User.find({ "notification.NewReleasesMovie": true }).distinct("_id");
+    const userId = await User.find({
+      "notification.NewReleasesMovie": true,
+    }).distinct("_id");
 
     const userTokens = await User.find({
       "notification.NewReleasesMovie": true,
@@ -147,7 +162,9 @@ exports.store = async (req, res) => {
             notification.userId = id;
             notification.movieId = movie._id;
             notification.image = movie.image;
-            notification.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            notification.date = new Date().toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            });
             await notification.save();
           });
         })
@@ -183,13 +200,24 @@ exports.storeSeries = async (req, res) => {
       !req.body.trailerImage ||
       !req.body.trailerVideoUrl
     ) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!!" });
     }
 
-    const [region, genre] = await Promise.all([Region.findById(req.body.region), Genre.findById(req.body.genre)]);
+    const [region, genre] = await Promise.all([
+      Region.findById(req.body.region),
+      Genre.findById(req.body.genre),
+    ]);
 
-    if (!region) return res.status(200).json({ status: false, message: "Region does not found!" });
-    if (!genre) return res.status(200).json({ status: false, message: "Genre does not found!" });
+    if (!region)
+      return res
+        .status(200)
+        .json({ status: false, message: "Region does not found!" });
+    if (!genre)
+      return res
+        .status(200)
+        .json({ status: false, message: "Genre does not found!" });
 
     const movie = new Movie();
 
@@ -199,7 +227,9 @@ exports.storeSeries = async (req, res) => {
     movie.year = req.body.year;
     movie.description = req.body.description;
     movie.type = req.body.type;
-    movie.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+    movie.date = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
     movie.region = region._id;
     movie.media_type = "tv";
     movie.updateType = 1;
@@ -274,7 +304,297 @@ exports.storeSeries = async (req, res) => {
             notification.userId = id;
             notification.movieId = movie._id;
             notification.image = movie.image;
-            notification.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+            notification.date = new Date().toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            });
+            await notification.save();
+          });
+        })
+        .catch((error) => {
+          console.log("Error sending message:      ", error);
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      error: error.message || "Internal Server Error",
+    });
+  }
+};
+
+//manual create crtoon by admin
+exports.storeCartoon = async (req, res) => {
+  try {
+    if (
+      !req.body.title ||
+      !req.body.year ||
+      !req.body.description ||
+      !req.body.region ||
+      !req.body.genre ||
+      !req.body.type ||
+      !req.body.runtime ||
+      !req.body.videoType ||
+      !req.body.trailerVideoType ||
+      !req.body.trailerType ||
+      !req.body.trailerName ||
+      !req.body.image ||
+      !req.body.thumbnail ||
+      !req.body.trailerImage ||
+      !req.body.link ||
+      !req.body.trailerVideoUrl
+    ) {
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!" });
+    }
+
+    const [region, genre] = await Promise.all([
+      Region.findById(req.body.region),
+      Genre.findById(req.body.genre),
+    ]);
+
+    if (!region)
+      return res
+        .status(200)
+        .json({ status: false, message: "Region does not found!" });
+    if (!genre)
+      return res
+        .status(200)
+        .json({ status: false, message: "Genre does not found!" });
+
+    const movie = new Movie();
+    movie.videoType = req.body.videoType;
+    movie.link = req.body.link;
+    movie.image = req.body.image;
+    movie.thumbnail = req.body.thumbnail;
+    movie.title = req.body.title;
+    movie.runtime = req.body.runtime;
+    movie.year = req.body.year;
+    movie.description = req.body.description;
+    movie.type = req.body.type;
+    movie.date = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
+    movie.region = region._id;
+    movie.media_type = "cartoon";
+    movie.updateType = 1;
+    movie.convertUpdateType.image = 1;
+    movie.convertUpdateType.thumbnail = 1;
+    movie.convertUpdateType.link = 1;
+
+    //genre
+    const multipleGenre = req.body.genre.toString().split(",");
+    movie.genre = multipleGenre;
+
+    await movie.save();
+
+    //trailer create
+    const trailer = new Trailer();
+    trailer.videoType = req.body.trailerVideoType;
+    trailer.videoUrl = req.body.trailerVideoUrl;
+    trailer.trailerImage = req.body.trailerImage;
+    trailer.name = req.body.trailerName;
+    trailer.type = req.body.trailerType;
+    trailer.movie = movie._id;
+    trailer.updateType = 1;
+    trailer.convertUpdateType.trailerImage = 1;
+    trailer.convertUpdateType.videoUrl = 1;
+
+    const [saveTrailer, data] = await Promise.all([
+      trailer.save(),
+      Movie.findById(movie._id).populate([
+        { path: "region", select: "name" },
+        { path: "genre", select: "name" },
+      ]),
+    ]);
+
+    res.status(200).json({
+      status: true,
+      message: "Cartoon Created Successfully!",
+      movie: data,
+    });
+
+    //New release movie related notification.....
+    const userId = await User.find({
+      "notification.NewReleasesMovie": true,
+    }).distinct("_id");
+
+    const userTokens = await User.find({
+      "notification.NewReleasesMovie": true,
+    }).distinct("fcmToken");
+
+    console.log("fcmToken in Cartoon:  ", userTokens.length);
+
+    if (userTokens.length !== 0) {
+      const adminPromise = await admin;
+
+      const payload = {
+        tokens: userTokens,
+        notification: {
+          title: `New Release`,
+          body: "Get Ready: Latest Cartoon Watchlist is Here!",
+        },
+      };
+
+      adminPromise
+        .messaging()
+        .sendMulticast(payload)
+        .then(async (response) => {
+          console.log("Successfully sent with response: ", response);
+
+          await userId.map(async (id) => {
+            const notification = new Notification();
+            notification.title = movie.title;
+            notification.message = `Get Ready to Binge: New ${movie.title} Added Today!`;
+            notification.userId = id;
+            notification.movieId = movie._id;
+            notification.image = movie.image;
+            notification.date = new Date().toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            });
+            await notification.save();
+          });
+        })
+        .catch((error) => {
+          console.log("Error sending message:      ", error);
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: false,
+      error: error.message || "Internal Server Error",
+    });
+  }
+};
+
+//manual create music by admin
+exports.storeMusic = async (req, res) => {
+  try {
+    if (
+      !req.body ||
+      !req.body.title ||
+      !req.body.year ||
+      !req.body.description ||
+      !req.body.region ||
+      !req.body.genre ||
+      !req.body.type ||
+      !req.body.trailerVideoType ||
+      !req.body.trailerType ||
+      !req.body.trailerName ||
+      !req.body.image ||
+      !req.body.thumbnail ||
+      !req.body.trailerImage ||
+      !req.body.trailerVideoUrl
+    ) {
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!!" });
+    }
+
+    const [region, genre] = await Promise.all([
+      Region.findById(req.body.region),
+      Genre.findById(req.body.genre),
+    ]);
+
+    if (!region)
+      return res
+        .status(200)
+        .json({ status: false, message: "Region does not found!" });
+    if (!genre)
+      return res
+        .status(200)
+        .json({ status: false, message: "Genre does not found!" });
+
+    const movie = new Movie();
+
+    movie.image = req.body.image;
+    movie.thumbnail = req.body.thumbnail;
+    movie.title = req.body.title;
+    movie.year = req.body.year;
+    movie.description = req.body.description;
+    movie.type = req.body.type;
+    movie.date = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
+    movie.region = region._id;
+    movie.media_type = "music";
+    movie.updateType = 1;
+    movie.convertUpdateType.image = 1;
+    movie.convertUpdateType.thumbnail = 1;
+
+    //genre
+    const multipleGenre = req.body.genre.toString().split(",");
+    movie.genre = multipleGenre;
+
+    await movie.save();
+
+    //trailer create
+    const trailer = new Trailer();
+
+    trailer.videoType = req.body.trailerVideoType;
+    trailer.videoUrl = req.body.trailerVideoUrl;
+    trailer.trailerImage = req.body.trailerImage;
+    trailer.name = req.body.trailerName;
+    trailer.type = req.body.trailerType;
+    trailer.movie = movie._id;
+    trailer.updateType = 1;
+    trailer.convertUpdateType.trailerImage = 1;
+    trailer.convertUpdateType.videoUrl = 1;
+
+    const [saveTrailer, data] = await Promise.all([
+      trailer.save(),
+      Movie.findById(movie._id).populate([
+        { path: "region", select: "name" },
+        { path: "genre", select: "name" },
+      ]),
+    ]);
+
+    res.status(200).json({
+      status: true,
+      message: "Music Created Successfully!",
+      movie: data,
+    });
+
+    //New release movie related notification.....
+    const userId = await User.find({
+      "notification.NewReleasesMovie": true,
+    }).distinct("_id");
+
+    const userTokens = await User.find({
+      "notification.NewReleasesMovie": true,
+    }).distinct("fcmToken");
+
+    console.log("fcmToken in Music:  ", userTokens.length);
+
+    if (userTokens.length !== 0) {
+      const adminPromise = await admin;
+
+      const payload = {
+        tokens: userTokens,
+        notification: {
+          title: `New Release`,
+          body: "Get Ready: Latest Music Video is Here!",
+        },
+      };
+
+      adminPromise
+        .messaging()
+        .sendMulticast(payload)
+        .then(async (response) => {
+          console.log("Successfully sent with response: ", response);
+
+          await userId.map(async (id) => {
+            const notification = new Notification();
+            notification.title = movie.title;
+            notification.message = `Get Ready to Binge: New ${movie.title} Added Today!`;
+            notification.userId = id;
+            notification.movieId = movie._id;
+            notification.image = movie.image;
+            notification.date = new Date().toLocaleString("en-US", {
+              timeZone: "Asia/Kolkata",
+            });
             await notification.save();
           });
         })
@@ -295,7 +615,9 @@ exports.storeSeries = async (req, res) => {
 exports.getStoredetails = async (req, res) => {
   try {
     if ((!req.query.title || !req.query.IMDBid) && !req.query.type) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!" });
     }
 
     const options = {
@@ -307,15 +629,21 @@ exports.getStoredetails = async (req, res) => {
     };
 
     if (!process.env.Authorization) {
-      return res.status(200).json({ status: false, message: "TMDB credentials must be requried!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "TMDB credentials must be requried!" });
     }
 
     if (req.query.title) {
       //get movie or WebSeries details (https://api.themoviedb.org/3/search/movie?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US&page=1&include_adult=false&query=titanic)
 
-      const url = `https://api.themoviedb.org/3/search/${req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"}?query=${req.query.title}&include_adult=false&language=en-US&page=1`;
+      const url = `https://api.themoviedb.org/3/search/${
+        req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"
+      }?query=${req.query.title}&include_adult=false&language=en-US&page=1`;
 
-      const result = await fetch(url, options).then((response) => response.json());
+      const result = await fetch(url, options).then((response) =>
+        response.json()
+      );
 
       if (!result.results || result.results.length === 0) {
         return res.status(200).json({
@@ -326,11 +654,17 @@ exports.getStoredetails = async (req, res) => {
 
       //get trailer API (https://api.themoviedb.org/3/movie/595/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US)
 
-      const trailerFetchUrl = `https://api.themoviedb.org/3/${req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"}/${
-        req.query.type.toUpperCase() === "WEBSERIES" ? result.results[0].id : result.results[0].id
+      const trailerFetchUrl = `https://api.themoviedb.org/3/${
+        req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"
+      }/${
+        req.query.type.toUpperCase() === "WEBSERIES"
+          ? result.results[0].id
+          : result.results[0].id
       }/videos?language=en-US`;
 
-      const trailerResult = await fetch(trailerFetchUrl, options).then((response) => response.json());
+      const trailerResult = await fetch(trailerFetchUrl, options).then(
+        (response) => response.json()
+      );
 
       if (req.query.type.toUpperCase() === "WEBSERIES") {
         var series = {
@@ -343,7 +677,10 @@ exports.getStoredetails = async (req, res) => {
           TmdbMovieId: result.results[0].id,
           genre: result.results[0].genre_ids,
           region: result.results[0].origin_country,
-          trailerUrl: trailerResult.results.length > 0 ? youtubeUrl + trailerResult.results[0]?.key : null,
+          trailerUrl:
+            trailerResult.results.length > 0
+              ? youtubeUrl + trailerResult.results[0]?.key
+              : null,
         };
 
         //genre for series
@@ -357,10 +694,12 @@ exports.getStoredetails = async (req, res) => {
         });
 
         //region for series
-        const regionIds = await result.results[0].origin_country.map(async (id) => {
-          const region = await Region.findOne({ uniqueId: id });
-          return region;
-        });
+        const regionIds = await result.results[0].origin_country.map(
+          async (id) => {
+            const region = await Region.findOne({ uniqueId: id });
+            return region;
+          }
+        );
 
         await Promise.all(regionIds).then(function (results) {
           series.region = results;
@@ -375,7 +714,10 @@ exports.getStoredetails = async (req, res) => {
           media_type: result.results[0].media_type,
           TmdbMovieId: result.results[0].id,
           genre: result.results[0].genre_ids,
-          trailerUrl: trailerResult.results.length > 0 ? youtubeUrl + trailerResult.results[0]?.key : null,
+          trailerUrl:
+            trailerResult.results.length > 0
+              ? youtubeUrl + trailerResult.results[0]?.key
+              : null,
         };
 
         //genre for movie
@@ -389,15 +731,24 @@ exports.getStoredetails = async (req, res) => {
         });
       }
 
-      return res.status(200).json({ status: true, message: "Success", movie, series });
+      return res
+        .status(200)
+        .json({ status: true, message: "Success", movie, series });
     } else if (req.query.IMDBid) {
       //IMDB id Wise API called (https://api.themoviedb.org/3/find/tt27510174?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en&external_source=imdb_id)
 
       const url = `https://api.themoviedb.org/3/find/${req.query.IMDBid}?external_source=imdb_id`;
 
-      const result = await fetch(url, options).then((response) => response.json());
+      const result = await fetch(url, options).then((response) =>
+        response.json()
+      );
 
-      if ((req.query.type.toUpperCase() === "WEBSERIES" && result.tv_results.length === 0) || (req.query.type.toUpperCase() === "MOVIE" && result.movie_results.length === 0)) {
+      if (
+        (req.query.type.toUpperCase() === "WEBSERIES" &&
+          result.tv_results.length === 0) ||
+        (req.query.type.toUpperCase() === "MOVIE" &&
+          result.movie_results.length === 0)
+      ) {
         return res.status(200).json({
           status: false,
           message: "No data found!",
@@ -406,11 +757,17 @@ exports.getStoredetails = async (req, res) => {
 
       //get trailer API (https://api.themoviedb.org/3/movie/595/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US)
 
-      const trailerFetchUrl = `https://api.themoviedb.org/3/${req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"}/${
-        req.query.type.toUpperCase() === "WEBSERIES" ? result.tv_results[0].id : result.movie_results[0].id
+      const trailerFetchUrl = `https://api.themoviedb.org/3/${
+        req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"
+      }/${
+        req.query.type.toUpperCase() === "WEBSERIES"
+          ? result.tv_results[0].id
+          : result.movie_results[0].id
       }/videos?language=en-US`;
 
-      const trailerResult = await fetch(trailerFetchUrl, options).then((response) => response.json());
+      const trailerResult = await fetch(trailerFetchUrl, options).then(
+        (response) => response.json()
+      );
 
       if (req.query.type.toUpperCase() === "WEBSERIES") {
         var series = {
@@ -423,24 +780,31 @@ exports.getStoredetails = async (req, res) => {
           TmdbMovieId: result.tv_results[0].id,
           genre: result.tv_results[0].genre_ids,
           region: result.tv_results[0].origin_country,
-          trailerUrl: trailerResult.results.length > 0 ? youtubeUrl + trailerResult.results[0]?.key : null,
+          trailerUrl:
+            trailerResult.results.length > 0
+              ? youtubeUrl + trailerResult.results[0]?.key
+              : null,
         };
 
         //genre for series
-        const genreIds = await result.tv_results[0].genre_ids.map(async (id) => {
-          const genere = await Genre.findOne({ uniqueId: id });
-          return genere;
-        });
+        const genreIds = await result.tv_results[0].genre_ids.map(
+          async (id) => {
+            const genere = await Genre.findOne({ uniqueId: id });
+            return genere;
+          }
+        );
 
         await Promise.all(genreIds).then(function (results) {
           series.genre = results;
         });
 
         //region for series
-        const regionIds = await result.tv_results[0].origin_country.map(async (id) => {
-          const region = await Region.findOne({ uniqueId: id });
-          return region;
-        });
+        const regionIds = await result.tv_results[0].origin_country.map(
+          async (id) => {
+            const region = await Region.findOne({ uniqueId: id });
+            return region;
+          }
+        );
 
         await Promise.all(regionIds).then(function (results) {
           series.region = results;
@@ -455,21 +819,28 @@ exports.getStoredetails = async (req, res) => {
           media_type: result.movie_results[0].media_type,
           TmdbMovieId: result.movie_results[0].id,
           genre: result.movie_results[0].genre_ids,
-          trailerUrl: trailerResult.results.length > 0 ? youtubeUrl + trailerResult.results[0]?.key : null,
+          trailerUrl:
+            trailerResult.results.length > 0
+              ? youtubeUrl + trailerResult.results[0]?.key
+              : null,
         };
 
         //genre for movie
-        const genreIds = await result.movie_results[0].genre_ids.map(async (id) => {
-          const genere = await Genre.findOne({ uniqueId: id });
-          return genere;
-        });
+        const genreIds = await result.movie_results[0].genre_ids.map(
+          async (id) => {
+            const genere = await Genre.findOne({ uniqueId: id });
+            return genere;
+          }
+        );
 
         await Promise.all(genreIds).then(function (results) {
           movie.genre = results;
         });
       }
 
-      return res.status(200).json({ status: true, message: "Success", movie, series });
+      return res
+        .status(200)
+        .json({ status: true, message: "Success", movie, series });
     } else {
       return res.status(200).json({
         status: false,
@@ -478,7 +849,9 @@ exports.getStoredetails = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: false, error: error.message || "Internal Server error" });
+    return res
+      .status(500)
+      .json({ status: false, error: error.message || "Internal Server error" });
   }
 };
 
@@ -486,7 +859,9 @@ exports.getStoredetails = async (req, res) => {
 exports.getStore = async (req, res) => {
   try {
     if (!req.query.TmdbMovieId || !req.query.type) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details." });
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details." });
     }
 
     const options = {
@@ -498,14 +873,20 @@ exports.getStore = async (req, res) => {
     };
 
     if (!process.env.Authorization) {
-      return res.status(200).json({ status: false, message: "TMDB credentials must be requried!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "TMDB credentials must be requried!" });
     }
 
     //get movie or WebSeries details (https://api.themoviedb.org/3/tv/89113?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US)
 
-    const url = `https://api.themoviedb.org/3/${req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"}/${req.query.TmdbMovieId}?language=en-US`;
+    const url = `https://api.themoviedb.org/3/${
+      req.query.type.toUpperCase() === "WEBSERIES" ? "tv" : "movie"
+    }/${req.query.TmdbMovieId}?language=en-US`;
 
-    const result = await fetch(url, options).then((response) => response.json());
+    const result = await fetch(url, options).then((response) =>
+      response.json()
+    );
 
     if (!result) {
       return res.status(200).json({
@@ -528,12 +909,14 @@ exports.getStore = async (req, res) => {
       });
 
       //region for series
-      const regionArray = await result.production_countries.map(async (data) => {
-        const regionId = await Region.findOne({
-          uniqueID: data.iso_3166_1,
-        });
-        return regionId._id;
-      });
+      const regionArray = await result.production_countries.map(
+        async (data) => {
+          const regionId = await Region.findOne({
+            uniqueID: data.iso_3166_1,
+          });
+          return regionId._id;
+        }
+      );
 
       await Promise.all(regionArray).then(function (results) {
         series.region = results[0];
@@ -554,9 +937,13 @@ exports.getStore = async (req, res) => {
 
         //episodeData (https://api.themoviedb.org/3/tv/89113/season/1?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US)
 
-        const episodeUrl = `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/season/${[data.season_number]}?language=en-US`;
+        const episodeUrl = `https://api.themoviedb.org/3/tv/${
+          req.query.TmdbMovieId
+        }/season/${[data.season_number]}?language=en-US`;
 
-        const episodeResult = await fetch(episodeUrl, options).then((response) => response.json());
+        const episodeResult = await fetch(episodeUrl, options).then(
+          (response) => response.json()
+        );
 
         await episodeResult.episodes.map(async (data) => {
           const episode = new Episode();
@@ -576,7 +963,9 @@ exports.getStore = async (req, res) => {
 
       const trailerUrl = `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/videos?language=en-US`;
 
-      const trailerResult = await fetch(trailerUrl, options).then((response) => response.json());
+      const trailerResult = await fetch(trailerUrl, options).then((response) =>
+        response.json()
+      );
 
       await trailerResult.results.map(async (data) => {
         const trailerData = new Trailer();
@@ -593,7 +982,9 @@ exports.getStore = async (req, res) => {
       //credit(cast) for series (https://api.themoviedb.org/3/tv/89113/aggregate_credits?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US)
       const castUrl = `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/aggregate_credits?language=en-US`;
 
-      const castResult = await fetch(castUrl, options).then((response) => response.json());
+      const castResult = await fetch(castUrl, options).then((response) =>
+        response.json()
+      );
 
       await castResult.cast.map(async (data) => {
         const castData = new Role();
@@ -611,7 +1002,9 @@ exports.getStore = async (req, res) => {
       series.thumbnail = imageUrl + result.poster_path;
       series.TmdbMovieId = result.id;
       series.media_type = "tv";
-      series.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+      series.date = new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      });
       await series.save();
 
       res.status(200).json({
@@ -621,7 +1014,9 @@ exports.getStore = async (req, res) => {
       });
 
       //New release (series) related notification.....
-      const userId = await User.find({ "notification.NewReleasesMovie": true }).distinct("_id");
+      const userId = await User.find({
+        "notification.NewReleasesMovie": true,
+      }).distinct("_id");
 
       const userTokens = await User.find({
         "notification.NewReleasesMovie": true,
@@ -653,7 +1048,9 @@ exports.getStore = async (req, res) => {
               notification.userId = id;
               notification.movieId = series._id;
               notification.image = series.image;
-              notification.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+              notification.date = new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Kolkata",
+              });
               await notification.save();
             });
           })
@@ -678,12 +1075,14 @@ exports.getStore = async (req, res) => {
       });
 
       //region for movie
-      const regionArray = await result.production_countries.map(async (data) => {
-        const regionId = await Region.findOne({
-          uniqueID: data.iso_3166_1,
-        });
-        return regionId._id;
-      });
+      const regionArray = await result.production_countries.map(
+        async (data) => {
+          const regionId = await Region.findOne({
+            uniqueID: data.iso_3166_1,
+          });
+          return regionId._id;
+        }
+      );
 
       await Promise.all(regionArray).then(function (results) {
         movie.region = results[0];
@@ -693,7 +1092,9 @@ exports.getStore = async (req, res) => {
 
       const trailerUrl = `https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/videos?language=en-US`;
 
-      const trailerResult = await fetch(trailerUrl, options).then((response) => response.json());
+      const trailerResult = await fetch(trailerUrl, options).then((response) =>
+        response.json()
+      );
 
       await trailerResult.results.map(async (data) => {
         const trailerData = new Trailer();
@@ -711,7 +1112,9 @@ exports.getStore = async (req, res) => {
 
       const castUrl = `https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/credits?language=en-US`;
 
-      const castResult = await fetch(castUrl, options).then((response) => response.json());
+      const castResult = await fetch(castUrl, options).then((response) =>
+        response.json()
+      );
 
       await castResult.cast.map(async (data) => {
         const castData = new Role();
@@ -727,7 +1130,9 @@ exports.getStore = async (req, res) => {
 
       const mediaTypeUrl = `https://api.themoviedb.org/3/find/${IMDBidMediaType}?language=en&external_source=imdb_id`;
 
-      const mediaTypeResult = await fetch(mediaTypeUrl, options).then((response) => response.json());
+      const mediaTypeResult = await fetch(mediaTypeUrl, options).then(
+        (response) => response.json()
+      );
 
       movie.media_type = mediaTypeResult.movie_results[0].media_type;
       movie.title = result.title;
@@ -738,7 +1143,9 @@ exports.getStore = async (req, res) => {
       movie.thumbnail = imageUrl + result.poster_path;
       movie.TmdbMovieId = result.id;
       movie.IMDBid = result.imdb_id;
-      movie.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+      movie.date = new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+      });
       await movie.save();
 
       res.status(200).json({
@@ -780,7 +1187,9 @@ exports.getStore = async (req, res) => {
               notification.userId = id;
               notification.movieId = movie._id;
               notification.image = movie.image;
-              notification.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+              notification.date = new Date().toLocaleString("en-US", {
+                timeZone: "Asia/Kolkata",
+              });
               await notification.save();
             });
           })
@@ -789,15 +1198,19 @@ exports.getStore = async (req, res) => {
           });
       }
     } else {
-      return res.status(200).json({ status: false, message: "type must me passed valid." });
+      return res
+        .status(200)
+        .json({ status: false, message: "type must me passed valid." });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: false, error: error.message || "Internal Server error" });
+    return res
+      .status(500)
+      .json({ status: false, error: error.message || "Internal Server error" });
   }
 };
 
-//get year for movie or series
+//get year for movie or series or cartoon or music
 exports.getYear = async (req, res) => {
   try {
     const movie = await Movie.find().select("year");
@@ -816,16 +1229,23 @@ exports.getYear = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     if (!req.query.movieId) {
-      return res.status(200).json({ status: false, message: "movieId must be requried." });
+      return res
+        .status(200)
+        .json({ status: false, message: "movieId must be requried." });
     }
 
     if (!req.body.convertUpdateType || !req.body.updateType) {
-      return res.status(200).json({ status: false, message: "convertUpdateType and updateType must be requried." });
+      return res.status(200).json({
+        status: false,
+        message: "convertUpdateType and updateType must be requried.",
+      });
     }
 
     const movie = await Movie.findById(req.query.movieId);
     if (!movie) {
-      return res.status(200).json({ status: false, message: "No Movie Was Found." });
+      return res
+        .status(200)
+        .json({ status: false, message: "No Movie Was Found." });
     }
 
     movie.title = req.body.title ? req.body.title : movie.title;
@@ -834,9 +1254,13 @@ exports.update = async (req, res) => {
     movie.type = req.body.type ? req.body.type : movie.type;
     movie.videoType = req.body.videoType ? req.body.videoType : movie.videoType;
     movie.runtime = req.body.runtime ? req.body.runtime : movie.runtime;
-    movie.description = req.body.description ? req.body.description : movie.description;
+    movie.description = req.body.description
+      ? req.body.description
+      : movie.description;
 
-    const multipleGenre = req.body.genre ? req.body.genre.toString().split(",") : movie.genre;
+    const multipleGenre = req.body.genre
+      ? req.body.genre.toString().split(",")
+      : movie.genre;
     movie.genre = multipleGenre;
 
     if (req.body.image) {
@@ -865,8 +1289,12 @@ exports.update = async (req, res) => {
       await deleteFromSpace({ folderStructure, keyName });
 
       movie.updateType = Number(req.body.updateType); //always be 1
-      movie.convertUpdateType.thumbnail = Number(req.body.convertUpdateType.thumbnail); //always be 1
-      movie.thumbnail = req.body.thumbnail ? req.body.thumbnail : movie.thumbnail;
+      movie.convertUpdateType.thumbnail = Number(
+        req.body.convertUpdateType.thumbnail
+      ); //always be 1
+      movie.thumbnail = req.body.thumbnail
+        ? req.body.thumbnail
+        : movie.thumbnail;
     }
 
     if (req.body.link) {
@@ -911,16 +1339,23 @@ exports.update = async (req, res) => {
 exports.addView = async (req, res) => {
   try {
     if (!req.query.movieId) {
-      return res.status(200).json({ status: false, message: "Movie Id is required!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Movie Id is required!!" });
     }
 
     const movie = await Movie.findById(req.query.movieId);
-    if (!movie) return res.status(200).json({ status: false, message: "No Movie Was Found!!" });
+    if (!movie)
+      return res
+        .status(200)
+        .json({ status: false, message: "No Movie Was Found!!" });
 
     movie.view += 1;
     await movie.save();
 
-    return res.status(200).json({ status: true, message: "View Added successfully!!", movie });
+    return res
+      .status(200)
+      .json({ status: true, message: "View Added successfully!!", movie });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -933,15 +1368,24 @@ exports.addView = async (req, res) => {
 //get all top10 through view for android
 exports.getAllTop10 = async (req, res) => {
   try {
-    if (!req.query.type) return res.status(200).json({ status: false, message: "Oops! Invalid details!" });
+    if (!req.query.type)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details!" });
 
     var matchQuery;
     if (req.query.type === "WEB-SERIES") {
       matchQuery = { media_type: "tv" };
     } else if (req.query.type === "MOVIE") {
       matchQuery = { media_type: "movie" };
+    } else if (req.query.type === "CARTOON") {
+      matchQuery = { media_type: "cartoon" };
+    } else if (req.query.type === "MUSIC") {
+      matchQuery = { media_type: "music" };
     } else {
-      return res.status(200).json({ status: false, message: "Pass Valid Type!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Pass Valid Type!" });
     }
 
     const movie = await Movie.find(matchQuery).sort({ view: -1 }).limit(10);
@@ -959,15 +1403,24 @@ exports.getAllTop10 = async (req, res) => {
 //get most viewed movies or webSeries for admin panel
 exports.getAllCategoryTop10 = async (req, res) => {
   try {
-    if (!req.query.type) return res.status(200).json({ status: false, message: "Oops! Invalid details!" });
+    if (!req.query.type)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details!" });
 
     var matchQuery;
     if (req.query.type === "WEB-SERIES") {
       matchQuery = { media_type: "tv" };
     } else if (req.query.type === "MOVIE") {
       matchQuery = { media_type: "movie" };
+    } else if (req.query.type === "CARTOON") {
+      matchQuery = { media_type: "cartoon" };
+    } else if (req.query.type === "MUSIC") {
+      matchQuery = { media_type: "music" };
     } else {
-      return res.status(200).json({ status: false, message: "Pass Valid Type!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Pass Valid Type!!" });
     }
 
     const query = [
@@ -975,7 +1428,10 @@ exports.getAllCategoryTop10 = async (req, res) => {
       { path: "genre", select: ["name"] },
     ];
 
-    const movie = await Movie.find(matchQuery).populate(query).sort({ view: -1 }).limit(10);
+    const movie = await Movie.find(matchQuery)
+      .populate(query)
+      .sort({ view: -1 })
+      .limit(10);
 
     return res.status(200).json({ status: true, message: "Success!", movie });
   } catch (error) {
@@ -991,12 +1447,16 @@ exports.getAllCategoryTop10 = async (req, res) => {
 exports.isNewRelease = async (req, res) => {
   try {
     if (!req.query.movieId) {
-      return res.status(200).json({ status: false, message: "Movie Id is required !" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Movie Id is required !" });
     }
 
     const movie = await Movie.findById(req.query.movieId);
     if (!movie) {
-      return res.status(200).json({ status: false, message: "No Movie Was Found!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "No Movie Was Found!!" });
     }
 
     movie.isNewRelease = !movie.isNewRelease;
@@ -1004,7 +1464,9 @@ exports.isNewRelease = async (req, res) => {
 
     const data = await Movie.findById(movie._id).populate("region", "name");
 
-    return res.status(200).json({ status: true, message: "Success!", movie: data });
+    return res
+      .status(200)
+      .json({ status: true, message: "Success!", movie: data });
   } catch (error) {
     return res.status(500).json({
       status: false,
@@ -1016,7 +1478,9 @@ exports.isNewRelease = async (req, res) => {
 //get all isNewRelease
 exports.getAllNewRelease = async (req, res) => {
   try {
-    const movie = await Movie.find({ isNewRelease: true }).sort({ createdAt: -1 });
+    const movie = await Movie.find({ isNewRelease: true }).sort({
+      createdAt: -1,
+    });
 
     return res.status(200).json({ status: true, message: "Success!", movie });
   } catch (error) {
@@ -1032,33 +1496,38 @@ exports.getAllNewRelease = async (req, res) => {
 exports.MovieDetail = async (req, res) => {
   try {
     if (!req.query.movieId || !req.query.userId) {
-      return res.status(200).json({ status: true, message: "Oops ! Invalid details." });
+      return res
+        .status(200)
+        .json({ status: true, message: "Oops ! Invalid details." });
     }
 
     const userId = new mongoose.Types.ObjectId(req.query.userId);
     const movieId = new mongoose.Types.ObjectId(req.query.movieId);
 
-    const [movie, user, downloadExist, favorite, planExist, ratingExist] = await Promise.all([
-      Movie.findById(movieId),
-      User.findById(userId),
-      Download.findOne({ userId: userId, movieId: movieId }),
-      Favorite.findOne({ userId: userId, movieId: movieId }),
-      User.findOne({ _id: userId }, { isPremiumPlan: true }),
-      Rating.findOne({
-        userId: userId,
-        movieId: movieId,
-      }),
-    ]);
+    const [movie, user, downloadExist, favorite, planExist, ratingExist] =
+      await Promise.all([
+        Movie.findById(movieId),
+        User.findById(userId),
+        Download.findOne({ userId: userId, movieId: movieId }),
+        Favorite.findOne({ userId: userId, movieId: movieId }),
+        User.findOne({ _id: userId }, { isPremiumPlan: true }),
+        Rating.findOne({
+          userId: userId,
+          movieId: movieId,
+        }),
+      ]);
 
     if (!movie) {
       return res.status(500).json({
         status: false,
-        message: "No Movie or Web-Series Were Found.",
+        message: "No Movie, Web-Series, Cartoon or Music Were Found.",
       });
     }
 
     if (!user) {
-      return res.status(200).json({ status: false, message: "User does not found." });
+      return res
+        .status(200)
+        .json({ status: false, message: "User does not found." });
     }
 
     await Movie.aggregate([
@@ -1078,7 +1547,10 @@ exports.MovieDetail = async (req, res) => {
             {
               $match: {
                 $expr: {
-                  $and: [{ $eq: ["$$movieId", "$movie"] }, { $eq: ["$seasonNumber", 1] }],
+                  $and: [
+                    { $eq: ["$$movieId", "$movie"] },
+                    { $eq: ["$seasonNumber", 1] },
+                  ],
                 },
               },
             },
@@ -1180,7 +1652,9 @@ exports.MovieDetail = async (req, res) => {
           { path: "genre", select: "name" },
         ]);
 
-        return res.status(200).json({ status: true, message: "Success", movie: data_ });
+        return res
+          .status(200)
+          .json({ status: true, message: "Success", movie: data_ });
       }
     });
   } catch (error) {
@@ -1195,11 +1669,16 @@ exports.MovieDetail = async (req, res) => {
 //get movie(all category) wise trailer or episode for admin
 exports.MovieDetails = async (req, res) => {
   try {
-    if (!req.query.movieId) return res.status(200).json({ status: true, message: "Oops ! Invalid details!!" });
+    if (!req.query.movieId)
+      return res
+        .status(200)
+        .json({ status: true, message: "Oops ! Invalid details!!" });
 
     const movie = await Movie.findById(req.query.movieId);
     if (!movie) {
-      return res.status(500).json({ status: false, message: "No Movie Was Found!!" });
+      return res
+        .status(500)
+        .json({ status: false, message: "No Movie Was Found!!" });
     }
 
     await Movie.aggregate([
@@ -1217,7 +1696,10 @@ exports.MovieDetails = async (req, res) => {
             {
               $match: {
                 $expr: {
-                  $and: [{ $eq: ["$$movieId", "$movie"] }, { $eq: ["$seasonNumber", 1] }],
+                  $and: [
+                    { $eq: ["$$movieId", "$movie"] },
+                    { $eq: ["$seasonNumber", 1] },
+                  ],
                 },
               },
             },
@@ -1300,7 +1782,9 @@ exports.MovieDetails = async (req, res) => {
           { path: "genre", select: "name" },
         ]);
 
-        return res.status(200).json({ status: true, message: "Success!", movie: data_ });
+        return res
+          .status(200)
+          .json({ status: true, message: "Success!", movie: data_ });
       }
     });
   } catch (error) {
@@ -1314,7 +1798,10 @@ exports.MovieDetails = async (req, res) => {
 //searching in Movie
 exports.search = async (req, res) => {
   try {
-    if (!req.body.search) return res.status(200).json({ status: false, message: "Oops! Invalid details!!" });
+    if (!req.body.search)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details!!" });
 
     const query = [
       { path: "region", select: ["name"] },
@@ -1322,11 +1809,17 @@ exports.search = async (req, res) => {
     ];
 
     if (req.body.search) {
-      const response = await Movie.find({ title: { $regex: req.body.search, $options: "i" } }).populate(query);
+      const response = await Movie.find({
+        title: { $regex: req.body.search, $options: "i" },
+      }).populate(query);
 
-      return res.status(200).json({ status: true, message: "Success", movie: response });
+      return res
+        .status(200)
+        .json({ status: true, message: "Success", movie: response });
     } else if (req.body.search === "") {
-      return res.status(200).json({ status: true, message: "No data found.", movie: [] });
+      return res
+        .status(200)
+        .json({ status: true, message: "No data found.", movie: [] });
     }
   } catch (error) {
     return res.status(500).json({
@@ -1339,7 +1832,10 @@ exports.search = async (req, res) => {
 //get all movie for admin
 exports.getAll = async (req, res) => {
   try {
-    if (!req.query.type || !req.query.start || !req.query.limit) return res.status(200).json({ status: false, message: "Oops! Invalid details." });
+    if (!req.query.type || !req.query.start || !req.query.limit)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details." });
 
     const start = req.query.start ? parseInt(req.query.start) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit) : 10;
@@ -1349,8 +1845,14 @@ exports.getAll = async (req, res) => {
       matchQuery = { media_type: "tv" };
     } else if (req.query.type === "MOVIE") {
       matchQuery = { media_type: "movie" };
+    } else if (req.query.type === "CARTOON") {
+      matchQuery = { media_type: "cartoon" };
+    } else if (req.query.type === "MUSIC") {
+      matchQuery = { media_type: "music" };
     } else {
-      return res.status(200).json({ status: false, message: "Pass Valid Type!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Pass Valid Type!!" });
     }
 
     var searchQuery;
@@ -1408,9 +1910,13 @@ exports.getAll = async (req, res) => {
 //delete movie for admin
 exports.destroy = async (req, res) => {
   try {
-    const movie = await Movie.findById(mongoose.Types.ObjectId(req.query.movieId));
+    const movie = await Movie.findById(
+      mongoose.Types.ObjectId(req.query.movieId)
+    );
     if (!movie) {
-      return res.status(200).json({ status: false, message: "No movie was found!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "No movie was found!!" });
     }
 
     if (movie.link) {
@@ -1544,11 +2050,16 @@ exports.destroy = async (req, res) => {
 //get all more like this movie
 exports.getAllLikeThis = async (req, res) => {
   try {
-    if (!req.query.movieId) return res.status(200).json({ status: true, message: "Oops ! Invalid details." });
+    if (!req.query.movieId)
+      return res
+        .status(200)
+        .json({ status: true, message: "Oops ! Invalid details." });
 
     const movieExist = await Movie.findById(req.query.movieId);
     if (!movieExist) {
-      return res.status(200).json({ status: false, message: "Movie does not found." });
+      return res
+        .status(200)
+        .json({ status: false, message: "Movie does not found." });
     }
 
     const movie = await Movie.find({
@@ -1571,9 +2082,15 @@ exports.getAllLikeThis = async (req, res) => {
 exports.getMovie = async (req, res) => {
   try {
     const user = await User.findById(req.query.userId);
-    if (!user) return res.status(200).json({ status: false, message: "User does not found!!" });
+    if (!user)
+      return res
+        .status(200)
+        .json({ status: false, message: "User does not found!!" });
 
-    const planExist = await User.findOne({ _id: user._id }, { isPremiumPlan: true });
+    const planExist = await User.findOne(
+      { _id: user._id },
+      { isPremiumPlan: true }
+    );
 
     await Movie.aggregate([
       { $addFields: { isPlan: planExist.isPremiumPlan ? true : false } },
@@ -1590,7 +2107,10 @@ exports.getMovie = async (req, res) => {
                   $and: [
                     { $eq: ["$$movieId", "$movie"] },
                     {
-                      $or: [{ $eq: ["$type", "Trailer"] }, { $eq: ["$type", "Teaser"] }],
+                      $or: [
+                        { $eq: ["$type", "Trailer"] },
+                        { $eq: ["$type", "Teaser"] },
+                      ],
                     },
                   ],
                 },
@@ -1612,7 +2132,10 @@ exports.getMovie = async (req, res) => {
             {
               $match: {
                 $expr: {
-                  $and: [{ $eq: ["$movieId", "$$movieId"] }, { $eq: ["$userId", user._id] }],
+                  $and: [
+                    { $eq: ["$movieId", "$$movieId"] },
+                    { $eq: ["$userId", user._id] },
+                  ],
                 },
               },
             },
@@ -1650,7 +2173,9 @@ exports.getMovie = async (req, res) => {
           { path: "genre", select: "name" },
         ]);
 
-        return res.status(200).json({ status: true, message: "Success!", movie: data_ });
+        return res
+          .status(200)
+          .json({ status: true, message: "Success!", movie: data_ });
       }
     });
   } catch (error) {
@@ -1667,7 +2192,9 @@ exports.MovieFilterWise = async (req, res) => {
   try {
     var regionArray = [];
     if (req?.body?.region) {
-      const array = Array.isArray(req.body.region) ? req.body.region : [req.body.region];
+      const array = Array.isArray(req.body.region)
+        ? req.body.region
+        : [req.body.region];
       for (const region of array) {
         const elements = region.split(",");
 
@@ -1679,7 +2206,9 @@ exports.MovieFilterWise = async (req, res) => {
 
     var genreArray = [];
     if (req?.body?.genre) {
-      const array = Array.isArray(req.body.genre) ? req.body.genre : [req.body.genre];
+      const array = Array.isArray(req.body.genre)
+        ? req.body.genre
+        : [req.body.genre];
       for (const genre of array) {
         const elements = genre.split(",");
 
@@ -1691,7 +2220,9 @@ exports.MovieFilterWise = async (req, res) => {
 
     var yearArray = [];
     if (req?.body?.year) {
-      const array = Array.isArray(req.body.year) ? req.body.year : [req.body.year];
+      const array = Array.isArray(req.body.year)
+        ? req.body.year
+        : [req.body.year];
       for (const year of array) {
         const elements = year.split(",");
 
@@ -1703,7 +2234,9 @@ exports.MovieFilterWise = async (req, res) => {
 
     var typeArray = [];
     if (req?.body?.media_type) {
-      const array = Array.isArray(req.body.media_type) ? req.body.media_type : [req.body.media_type];
+      const array = Array.isArray(req.body.media_type)
+        ? req.body.media_type
+        : [req.body.media_type];
       for (const media_type of array) {
         const elements = media_type.split(",");
 
@@ -1716,7 +2249,12 @@ exports.MovieFilterWise = async (req, res) => {
     const movie = await Movie.aggregate([
       {
         $match: {
-          $or: [{ region: { $in: regionArray } }, { genre: { $in: genreArray } }, { year: { $in: yearArray } }, { media_type: { $in: typeArray } }],
+          $or: [
+            { region: { $in: regionArray } },
+            { genre: { $in: genreArray } },
+            { year: { $in: yearArray } },
+            { media_type: { $in: typeArray } },
+          ],
           //media_type: { $in: typeArray },
         },
       },
@@ -1750,7 +2288,10 @@ exports.MovieFilterWise = async (req, res) => {
 //best ComedyMovie for android (home)
 exports.bestComedyMovie = async (req, res) => {
   try {
-    if (!req.query.type) return res.status(200).json({ status: false, message: "Oops! Invalid details!!" });
+    if (!req.query.type)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details!!" });
 
     var matchQuery;
     if (req.query.type.toUpperCase() === "COMEDY") {
@@ -1759,7 +2300,9 @@ exports.bestComedyMovie = async (req, res) => {
 
     const movie = await Movie.find(matchQuery).sort({ view: -1 });
 
-    return res.status(200).json({ status: true, message: "Retrive best Comedy Movie!", movie });
+    return res
+      .status(200)
+      .json({ status: true, message: "Retrive best Comedy Movie!", movie });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1772,15 +2315,24 @@ exports.bestComedyMovie = async (req, res) => {
 //get topRated movies or webseries for android
 exports.getAllTopRated = async (req, res) => {
   try {
-    if (!req.query.type) return res.status(200).json({ status: false, message: "Oops! Invalid details!" });
+    if (!req.query.type)
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops! Invalid details!" });
 
     let matchQuery = {};
     if (req.query.type === "WEB-SERIES") {
       matchQuery = { media_type: "tv" };
     } else if (req.query.type === "MOVIE") {
       matchQuery = { media_type: "movie" };
+    } else if (req.query.type === "CARTOON") {
+      matchQuery = { media_type: "cartoon" };
+    } else if (req.query.type === "MUSIC") {
+      matchQuery = { media_type: "music" };
     } else {
-      return res.status(200).json({ status: false, message: "Pass Valid Type!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Pass Valid Type!" });
     }
 
     const movie = await Movie.aggregate([
@@ -1834,7 +2386,9 @@ exports.getAllTopRated = async (req, res) => {
 exports.getStoreFromTMDBToSpace = async (req, res) => {
   try {
     if (!req.query.TmdbMovieId || !req.query.type.toUpperCase()) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details." });
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details." });
     }
 
     const aws = require("aws-sdk");
@@ -1861,7 +2415,11 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
     const imageUrlBase = "https://image.tmdb.org/t/p/original";
 
     await axios
-      .get(`https://api.themoviedb.org/3/${req.query.type === "WEBSERIES" ? "tv" : "movie"}/${req.query.TmdbMovieId}?api_key=${tmdbApiKey}&language=en-US`)
+      .get(
+        `https://api.themoviedb.org/3/${
+          req.query.type === "WEBSERIES" ? "tv" : "movie"
+        }/${req.query.TmdbMovieId}?api_key=${tmdbApiKey}&language=en-US`
+      )
       .then(async (result) => {
         const mediaType = req.query.type === "WEBSERIES" ? "tv" : "movie";
         const mediaData = result.data;
@@ -1870,10 +2428,18 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
         const keyNameBackdrop = `backdrop_${mediaData.id}`;
         const keyNamePoster = `poster_${mediaData.id}`;
 
-        const backdropUploadResult = await uploadImageToS3(`${imageUrlBase}${mediaData.backdrop_path}`, folderStructure, keyNameBackdrop);
+        const backdropUploadResult = await uploadImageToS3(
+          `${imageUrlBase}${mediaData.backdrop_path}`,
+          folderStructure,
+          keyNameBackdrop
+        );
         const backdropImageUrl = backdropUploadResult.Location;
 
-        const posterUploadResult = await uploadImageToS3(`${imageUrlBase}${mediaData.poster_path}`, folderStructure, keyNamePoster);
+        const posterUploadResult = await uploadImageToS3(
+          `${imageUrlBase}${mediaData.poster_path}`,
+          folderStructure,
+          keyNamePoster
+        );
         const posterImageUrl = posterUploadResult.Location;
 
         if (req.query.type === "WEBSERIES") {
@@ -1890,12 +2456,14 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           });
 
           //region for series
-          const regionArray = await mediaData.production_countries.map(async (data) => {
-            const regionId = await Region.findOne({
-              uniqueID: data.iso_3166_1,
-            });
-            return regionId._id;
-          });
+          const regionArray = await mediaData.production_countries.map(
+            async (data) => {
+              const regionId = await Region.findOne({
+                uniqueID: data.iso_3166_1,
+              });
+              return regionId._id;
+            }
+          );
 
           await Promise.all(regionArray).then(function (results) {
             series.region = results[0];
@@ -1904,7 +2472,11 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           await mediaData.seasons.map(async (data) => {
             const keyName = `seasonImage${data.poster_path}`;
 
-            const seasonImageUploadResult = await uploadImageToS3(`${imageUrlBase}${data.poster_path}`, folderStructure, keyName);
+            const seasonImageUploadResult = await uploadImageToS3(
+              `${imageUrlBase}${data.poster_path}`,
+              folderStructure,
+              keyName
+            );
             const seasonImageUrl = seasonImageUploadResult.Location;
 
             const season = new Season();
@@ -1919,14 +2491,22 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
 
             await axios
               .get(
-                `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/season/
-                   ${[data.season_number]}?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
+                `https://api.themoviedb.org/3/tv/${
+                  req.query.TmdbMovieId
+                }/season/
+                   ${[
+                     data.season_number,
+                   ]}?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
               )
               .then(async (resultEpisode) => {
                 await resultEpisode.data.episodes.map(async (data) => {
                   const keyName = `episodeImage${data.still_path}`;
 
-                  const episodeImageUploadResult = await uploadImageToS3(`${imageUrlBase}${data.still_path}`, folderStructure, keyName);
+                  const episodeImageUploadResult = await uploadImageToS3(
+                    `${imageUrlBase}${data.still_path}`,
+                    folderStructure,
+                    keyName
+                  );
                   const episodeImageUrl = episodeImageUploadResult.Location;
 
                   const episode = new Episode();
@@ -1946,7 +2526,9 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
 
           //trailer for series API call
           await axios
-            .get(`https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`)
+            .get(
+              `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
+            )
             .then(async (response) => {
               await response.data.results.map(async (data) => {
                 const trailerData = new Trailer();
@@ -1964,12 +2546,18 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
 
           //credit(cast) for series API call
           await axios
-            .get(`https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/aggregate_credits?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`)
+            .get(
+              `https://api.themoviedb.org/3/tv/${req.query.TmdbMovieId}/aggregate_credits?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
+            )
             .then(async (creditRes) => {
               await creditRes.data.cast.map(async (data) => {
                 const keyName = `roleImage${data.profile_path}`;
 
-                const roleImageUploadResult = await uploadImageToS3(`${imageUrlBase}${data.profile_path}`, folderStructure, keyName);
+                const roleImageUploadResult = await uploadImageToS3(
+                  `${imageUrlBase}${data.profile_path}`,
+                  folderStructure,
+                  keyName
+                );
                 const roleImageUrl = roleImageUploadResult.Location;
 
                 const castData = new Role();
@@ -1989,7 +2577,9 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           series.thumbnail = posterImageUrl;
           series.TmdbMovieId = mediaData.id;
           series.media_type = "tv";
-          series.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+          series.date = new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          });
           await series.save();
 
           res.status(200).json({
@@ -2011,12 +2601,14 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           });
 
           //region for movie
-          const regionArray = await result.data.production_countries.map(async (data) => {
-            const regionId = await Region.findOne({
-              uniqueID: data.iso_3166_1,
-            });
-            return regionId._id;
-          });
+          const regionArray = await result.data.production_countries.map(
+            async (data) => {
+              const regionId = await Region.findOne({
+                uniqueID: data.iso_3166_1,
+              });
+              return regionId._id;
+            }
+          );
 
           await Promise.all(regionArray).then(function (results) {
             movie.region = results[0];
@@ -2024,7 +2616,9 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
 
           //trailer for movie API call
           await axios
-            .get(`https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`)
+            .get(
+              `https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/videos?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
+            )
             .then(async (response) => {
               await response.data.results.map(async (data) => {
                 const trailerData = new Trailer();
@@ -2042,12 +2636,18 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
 
           //credit(cast) for movie API call
           await axios
-            .get(`https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/credits?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`)
+            .get(
+              `https://api.themoviedb.org/3/movie/${req.query.TmdbMovieId}/credits?api_key=67af5e631dcbb4d0981b06996fcd47bc&language=en-US`
+            )
             .then(async (creditRes) => {
               await creditRes.data.cast.map(async (data) => {
                 const keyName = `roleImage${data.profile_path}`;
 
-                const roleImageUploadResult = await uploadImageToS3(`${imageUrlBase}${data.profile_path}`, folderStructure, keyName);
+                const roleImageUploadResult = await uploadImageToS3(
+                  `${imageUrlBase}${data.profile_path}`,
+                  folderStructure,
+                  keyName
+                );
                 const roleImageUrl = roleImageUploadResult.Location;
 
                 const castData = new Role();
@@ -2064,7 +2664,9 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           const IMDBidMediaType = await result.data.imdb_id;
 
           await axios
-            .get(`https://api.themoviedb.org/3/find/${IMDBidMediaType}?api_key=10471161c6c1b74f6278ff73bfe95982&language=en&external_source=imdb_id`)
+            .get(
+              `https://api.themoviedb.org/3/find/${IMDBidMediaType}?api_key=10471161c6c1b74f6278ff73bfe95982&language=en&external_source=imdb_id`
+            )
             .then(async (result) => {
               movie.media_type = result.data.movie_results[0].media_type;
             })
@@ -2080,7 +2682,9 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
           movie.thumbnail = posterImageUrl;
           movie.TmdbMovieId = mediaData.id;
           movie.IMDBid = mediaData.imdb_id;
-          movie.date = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+          movie.date = new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          });
           await movie.save();
 
           res.status(200).json({
@@ -2089,12 +2693,16 @@ exports.getStoreFromTMDBToSpace = async (req, res) => {
             movie,
           });
         } else {
-          return res.status(200).json({ status: false, message: "type must be passed valid." });
+          return res
+            .status(200)
+            .json({ status: false, message: "type must be passed valid." });
         }
       })
       .catch((error) => console.log(error));
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ status: false, error: error.message || "Internal Server error" });
+    return res
+      .status(500)
+      .json({ status: false, error: error.message || "Internal Server error" });
   }
 };

@@ -63,7 +63,7 @@ export const covertURl = async (FileName) => {
 
     const params = {
       Bucket: bucketName,
-      Key: projectName+ FileName,
+      Key: projectName + FileName,
       Expires: 60,
     };
 

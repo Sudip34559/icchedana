@@ -1,10 +1,10 @@
 //express
 const express = require("express");
 const route = express.Router();
-
+const multer = require("multer");
 //s3multer
 const upload = require("../../util/s3multer");
-
+const upload2 = multer({ dest: "uploads/" });
 //checkAccessWithSecretKey
 const checkAccessWithSecretKey = require("../../util/checkAccess");
 
@@ -14,8 +14,6 @@ const FileController = require("./file.controller");
 //upload content to digital ocean storage
 route.post(
   "/upload-file",
-  // checkAccessWithSecretKey(),
-
   FileController.uploadContent,
   function (request, response, next) {
     upload(request, response, function (error) {

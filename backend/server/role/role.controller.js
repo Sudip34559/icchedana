@@ -9,13 +9,24 @@ const Movie = require("../movie/movie.model");
 //create role
 exports.store = async (req, res) => {
   try {
-    if (!req.body.name || !req.body.position || !req.body.image || !req.body.movieId) {
-      return res.status(200).json({ status: false, message: "Oops ! Invalid details!" });
+    console.log("body", req.body);
+    if (
+      !req.body.name ||
+      !req.body.position ||
+      !req.body.image ||
+      !req.body.movieId
+    ) {
+      return res
+        .status(200)
+        .json({ status: false, message: "Oops ! Invalid details!" });
     }
+    console.log(req.body);
 
     const movie = await Movie.findById(req.body.movieId);
     if (!movie) {
-      return res.status(200).json({ status: false, message: "Movie does not found!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Movie does not found!" });
     }
 
     const role = new Role();
@@ -48,7 +59,9 @@ exports.update = async (req, res) => {
   try {
     const role = await Role.findById(req.query.roleId);
     if (!role) {
-      return res.status(200).json({ status: false, message: "Role does not found!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Role does not found!!" });
     }
 
     //delete the old image from digitalOcean Spaces
@@ -89,7 +102,9 @@ exports.destroy = async (req, res) => {
   try {
     const role = await Role.findById(req.query.roleId);
     if (!role) {
-      return res.status(200).json({ status: false, message: "Role does not found!!" });
+      return res
+        .status(200)
+        .json({ status: false, message: "Role does not found!!" });
     }
 
     //delete the old image from digitalOcean Spaces
@@ -103,7 +118,9 @@ exports.destroy = async (req, res) => {
 
     await role.deleteOne();
 
-    return res.status(200).json({ status: true, message: "role deleted Successfully." });
+    return res
+      .status(200)
+      .json({ status: true, message: "role deleted Successfully." });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -116,7 +133,9 @@ exports.destroy = async (req, res) => {
 //get all role
 exports.get = async (req, res) => {
   try {
-    const role = await Role.find().populate("movie", "title").sort({ createdAt: -1 });
+    const role = await Role.find()
+      .populate("movie", "title")
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({ status: true, message: "Success", role });
   } catch (error) {
@@ -130,14 +149,21 @@ exports.get = async (req, res) => {
 //get role movieId wise for admin
 exports.getIdWise = async (req, res) => {
   try {
-    if (!req.query.movieId) return res.status(200).json({ status: true, message: "Oops ! Invalid details!!" });
+    if (!req.query.movieId)
+      return res
+        .status(200)
+        .json({ status: true, message: "Oops ! Invalid details!!" });
 
     const movie = await Movie.findById(req.query.movieId);
     if (!movie) {
-      return res.status(500).json({ status: false, message: "No Movie Was Found!!" });
+      return res
+        .status(500)
+        .json({ status: false, message: "No Movie Was Found!!" });
     }
 
-    const role = await Role.find({ movie: movie._id }).populate("movie", "title updateType convertUpdateType").sort({ createdAt: -1 });
+    const role = await Role.find({ movie: movie._id })
+      .populate("movie", "title updateType convertUpdateType")
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({ status: true, message: "Success", role });
   } catch (error) {

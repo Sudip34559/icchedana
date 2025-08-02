@@ -1,0 +1,61 @@
+//get MUSIC
+export const GET_MUSIC = "GET_MUSIC";
+
+//get top 10 MUSIC
+export const GET_TOP_10_MUSIC = "GET_TOP_10_MUSIC";
+
+//get top 10 web-series
+export const GET_TOP_10_WEB_SERIES = "GET_TOP_10_WEB_SERIES";
+
+//MUSIC Details
+export const MUSIC_DETAILS = "MUSIC_DETAILS";
+
+//dialog type
+export const OPEN_MUSIC_DIALOG = "OPEN_MUSIC_DIALOG";
+export const CLOSE_DIALOG = "CLOSE_DIALOG";
+
+//insert
+export const INSERT_MUSIC = "INSERT_MUSIC";
+
+//update
+export const UPDATE_MUSIC = "UPDATE_MUSIC";
+
+//delete MUSIC
+export const DELETE_MUSIC = "DELETE_MUSIC";
+
+//isNewRelease Switch
+export const IS_NEW_RELEASE_SWITCH = "IS_NEW_RELEASE_SWITCH";
+
+//get comment
+export const GET_COMMENT = "GET_COMMENT";
+
+//delete comment
+export const DELETE_COMMENT = "DELETE_COMMENT";
+
+//toast
+export const OPEN_MUSIC_TOAST = "OPEN_MUSIC_TOAST";
+export const CLOSE_MUSIC_TOAST = "CLOSE_MUSIC_TOAST";
+
+//MUSIC Details From TMDB
+export const MUSIC_DETAILS_TMDB = "MUSIC_DETAILS_TMDB";
+
+const uploadFileTypes = {
+  SET_UPLOAD_FILE: "SET_UPLOAD_FILE",
+
+  SET_UPLOAD_PROGRESS: "SET_UPLOAD_PROGRESS",
+  SUCCESS_UPLOAD_FILE: "SUCCESS_UPLOAD_FILE",
+  FAILURE_UPLOAD_FILE: "FAILURE_UPLOAD_FILE",
+
+  //manual MUSIC
+  SET_UPLOAD_FILE_MANUAL: "SET_UPLOAD_FILE_MANUAL",
+
+  SET_UPLOAD_PROGRESS_MANUAL: "SET_UPLOAD_PROGRESS_MANUAL",
+  SUCCESS_UPLOAD_FILE_MANUAL: "SUCCESS_UPLOAD_FILE_MANUAL",
+  FAILURE_UPLOAD_FILE_MANUAL: "FAILURE_UPLOAD_FILE_MANUAL",
+};
+
+export const EMPTY_TMDB_MUSICS_DIALOGUE = "EMPTY_TMDB_MUSICS_DIALOGUE";
+
+export default uploadFileTypes;
+
+export const FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS";

@@ -24,7 +24,6 @@ import Swal from "sweetalert2";
 import { setToast } from "../../util/Toast";
 import { warning } from "../../util/Alert";
 
-
 //action
 import {
   getTeamMember,
@@ -55,11 +54,8 @@ const TeamMember = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  
-
   const dialogData = JSON.parse(localStorage.getItem("trailerId"));
   const movieTitle = localStorage.getItem("movieTitle");
-
 
   useEffect(() => {
     dispatch(getTeamMember(dialogData?._id));
@@ -71,14 +67,12 @@ const TeamMember = (props) => {
   }, [teamMember]);
 
   const insertOpen = (data) => {
-    
     localStorage.removeItem("updateTeamMemberData");
     history.push("/admin/cast/cast_form");
   };
 
   //Update Dialog OPen
   const updateOpen = (data) => {
-    
     dispatch({ type: OPEN_DIALOG, payload: data });
     localStorage.setItem("updateTeamMemberDataDialogue", JSON.stringify(data));
 
@@ -100,7 +94,6 @@ const TeamMember = (props) => {
     data
       .then((result) => {
         if (result.isConfirmed) {
-          
           props.deleteTeamMember(mongoId);
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
         }

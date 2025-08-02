@@ -6,7 +6,7 @@ import { useHistory, NavLink } from "react-router-dom";
 
 //material-ui
 import { DialogActions, Typography } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import MovieFilterIcon from "@mui/icons-material/MovieFilter";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import EditIcon from "@mui/icons-material/Edit";
@@ -55,7 +55,7 @@ const useStyles1 = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
     "& > *": {
-      margin:theme?.spacing && theme?.spacing(1),
+      margin: theme?.spacing && theme?.spacing(1),
       marginBottom: "22px",
     },
   },
@@ -65,12 +65,11 @@ const MovieDialog = (props) => {
   const { genre } = useSelector((state) => state.genre);
   const { region } = useSelector((state) => state.region);
   const { movieDetailsTmdb } = useSelector((state) => state.movie);
-  
+
   //call teamMember and set teamMember
   const { teamMember } = useSelector((state) => state.teamMember);
 
   const dialogData = JSON.parse(localStorage.getItem("updateMovieData"));
-
   const editor = useRef(null);
   const dispatch = useDispatch();
 
@@ -540,8 +539,6 @@ const MovieDialog = (props) => {
 
   // //insert function
   const handleSubmit = () => {
-    
-
     if (
       !title ||
       !trailerName ||

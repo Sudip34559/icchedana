@@ -4,6 +4,7 @@ import "./login.css";
 
 //login form logo
 import logo from "../Component/assets/images/logo.png";
+// import logo2 from "icchedana/frontend/src/Component/assets/images/Icchedana_Logo.png";
 
 //router
 import { NavLink, useHistory } from "react-router-dom";

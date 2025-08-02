@@ -17,7 +17,7 @@ import { apiInstanceFetch } from "../../util/api";
 export const getTeamMember = (dialogData) => (dispatch) => {
   apiInstanceFetch
     .get(`role/movieIdWise?movieId=${dialogData}`)
-    
+
     .then((res) => {
       dispatch({ type: GET_TEAM_MEMBER, payload: res.role });
     })
@@ -28,7 +28,7 @@ export const getTeamMember = (dialogData) => (dispatch) => {
 
 //insert TeamMember
 export const insertTeamMember = (data) => (dispatch) => {
-  axios
+  apiInstanceFetch
     .post(`role/create`, data)
     .then((res) => {
       dispatch({ type: INSERT_TEAM_MEMBER, payload: res.data.role });

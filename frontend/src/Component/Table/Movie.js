@@ -30,10 +30,9 @@ import { setToast } from "../../util/Toast";
 import { warning, alert } from "../../util/Alert";
 import Swal from "sweetalert2";
 
-
 //html Parser
 
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import { baseURL } from "../../util/config";
 import Pagination from "../../Pages/Pagination";
 import { covertURl } from "../../util/AwsFunction";
@@ -45,7 +44,7 @@ import { Toast } from "../../util/Toast_";
 const useStyles1 = makeStyles((theme) => ({
   root: {
     flexShrink: 0,
-    marginLeft:theme?.spacing && theme?.spacing(2.5),
+    marginLeft: theme?.spacing && theme?.spacing(2.5),
     background: "#221f3a",
     color: "#fff",
   },
@@ -66,12 +65,9 @@ const Movie = (props) => {
   const [countrySort, setCountrySort] = useState(true);
   const [search, setSearch] = useState("");
 
-  
-
   const { movie, isTost, toastData, actionFor, totalMovie } = useSelector(
     (state) => state.movie
   );
-
   useEffect(() => {
     dispatch(getMovie(activePage, rowsPerPage, search));
   }, [dispatch, activePage, rowsPerPage, search]);
@@ -111,7 +107,6 @@ const Movie = (props) => {
   };
 
   const handleNewRelease = (movieId) => {
-    
     props.newRelease(movieId);
   };
 
@@ -128,7 +123,6 @@ const Movie = (props) => {
     data
       .then((result) => {
         if (result.isConfirmed) {
-          
           props.deleteMovie(movieId);
           Toast("success", "Movie deleted successfully.");
         }

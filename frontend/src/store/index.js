@@ -22,11 +22,15 @@ import seasonReducer from "./Season/season.reducer";
 import { advertiseReducer } from "./Advertisement/advertisement.reducer";
 import { liveTvReducer } from "./LiveTv/liveTv.reducer";
 import userRestrictedReducer from "./UserRestrictedTicket/restricted.reducer";
+import cartoonReducer from "./cartoon/cartoon.reducer";
+import musicReducer from "./music/music.reducer";
 
 export default combineReducers({
   admin: adminReducer,
   dashboard: dashboardReducer,
   movie: movieReducer,
+  cartoon: cartoonReducer,
+  music: musicReducer,
   genre: genreReducer,
   region: regionReducer,
   trailer: trailerReducer,

@@ -12,10 +12,32 @@ const MovieController = require("./movie.controller");
 route.post("/create", checkAccessWithSecretKey(), MovieController.store);
 
 //manual create series by admin
-route.post("/createSeries", checkAccessWithSecretKey(), MovieController.storeSeries);
+route.post(
+  "/createSeries",
+  checkAccessWithSecretKey(),
+  MovieController.storeSeries
+);
+
+//manual create cartoon by admin
+route.post(
+  "/createCartoon",
+  checkAccessWithSecretKey(),
+  MovieController.storeCartoon
+);
+
+//manual create music by admin
+route.post(
+  "/createMusic",
+  checkAccessWithSecretKey(),
+  MovieController.storeMusic
+);
 
 //get details IMDB id or title wise from TMDB database for admin
-route.get("/getStoredetails", checkAccessWithSecretKey(), MovieController.getStoredetails);
+route.get(
+  "/getStoredetails",
+  checkAccessWithSecretKey(),
+  MovieController.getStoredetails
+);
 
 //create movie from TMDB database
 route.post("/getStore", checkAccessWithSecretKey(), MovieController.getStore);
@@ -30,13 +52,25 @@ route.patch("/view", checkAccessWithSecretKey(), MovieController.addView);
 route.get("/Top10", checkAccessWithSecretKey(), MovieController.getAllTop10);
 
 //get all top10 through view for admin panel
-route.get("/AllTop10", checkAccessWithSecretKey(), MovieController.getAllCategoryTop10);
+route.get(
+  "/AllTop10",
+  checkAccessWithSecretKey(),
+  MovieController.getAllCategoryTop10
+);
 
 //isNewRelease
-route.patch("/isNewRelease", checkAccessWithSecretKey(), MovieController.isNewRelease);
+route.patch(
+  "/isNewRelease",
+  checkAccessWithSecretKey(),
+  MovieController.isNewRelease
+);
 
 //get all isNewRelease
-route.get("/isNewRelease", checkAccessWithSecretKey(), MovieController.getAllNewRelease);
+route.get(
+  "/isNewRelease",
+  checkAccessWithSecretKey(),
+  MovieController.getAllNewRelease
+);
 
 //get free or premium movie(all category) wise trailer or episode for android
 route.get("/detail", checkAccessWithSecretKey(), MovieController.MovieDetail);
@@ -48,7 +82,11 @@ route.get("/details", checkAccessWithSecretKey(), MovieController.MovieDetails);
 route.get("/getYear", checkAccessWithSecretKey(), MovieController.getYear);
 
 //search Movie Name
-route.post("/searchMovieTitle", checkAccessWithSecretKey(), MovieController.search);
+route.post(
+  "/searchMovieTitle",
+  checkAccessWithSecretKey(),
+  MovieController.search
+);
 
 //get all movie for android
 route.get("/getMovie", checkAccessWithSecretKey(), MovieController.getMovie);
@@ -57,19 +95,35 @@ route.get("/getMovie", checkAccessWithSecretKey(), MovieController.getMovie);
 route.get("/all", checkAccessWithSecretKey(), MovieController.getAll);
 
 //get all more like this movie
-route.get("/allLikeThis", checkAccessWithSecretKey(), MovieController.getAllLikeThis);
+route.get(
+  "/allLikeThis",
+  checkAccessWithSecretKey(),
+  MovieController.getAllLikeThis
+);
 
 //delete movie for admin panel
 route.delete("/delete", checkAccessWithSecretKey(), MovieController.destroy);
 
 //get all movie filterWise
-route.post("/filterWise", checkAccessWithSecretKey(), MovieController.MovieFilterWise);
+route.post(
+  "/filterWise",
+  checkAccessWithSecretKey(),
+  MovieController.MovieFilterWise
+);
 
 //best ComedyMovie for android (home)
-route.get("/ComedyMovie", checkAccessWithSecretKey(), MovieController.bestComedyMovie);
+route.get(
+  "/ComedyMovie",
+  checkAccessWithSecretKey(),
+  MovieController.bestComedyMovie
+);
 
 //get topRated movie or webseries for android
-route.get("/topRated", checkAccessWithSecretKey(), MovieController.getAllTopRated);
+route.get(
+  "/topRated",
+  checkAccessWithSecretKey(),
+  MovieController.getAllTopRated
+);
 
 //directly upload images from TMDb to your DigitalOcean Spaces
 //route.post("/getStore", checkAccessWithSecretKey(), MovieController.getStoreFromTMDBToSpace);
