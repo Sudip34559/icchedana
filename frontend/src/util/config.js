@@ -1,4 +1,5 @@
 export const baseURL = "https://icchedana.net/";
+// export const baseURL = "http://localhost:8000/";
 export const secretKey = "5TIvw5cpc0";
 export const projectName = "icchedana";
 export const hostname = "https://blr1.digitaloceanspaces.com";

@@ -383,10 +383,14 @@ const CartoonForm = (props) => {
       const durationInMilliseconds = durationInSeconds * 1000;
       setRuntime(parseInt(durationInMilliseconds));
     });
-
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[-:.]/g, "")
+      .replace("T", "_")
+      .slice(0, 15);
     const formData = new FormData();
     formData.append("folderStructure", folderStructureMovieVideo);
-    formData.append("keyName", event.target.files[0]?.name);
+    formData.append("keyName", `${timestamp}_${event.target.files[0]?.name}`);
     formData.append("content", event.target.files[0]);
     const uploadUrl = baseURL + `file/upload-file`;
 
@@ -449,9 +453,14 @@ const CartoonForm = (props) => {
   //Trailer Video Load
   let folderStructureTrailerVideo = projectName + "trailerVideo";
   const trailerVideoLoad = async (event) => {
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[-:.]/g, "")
+      .replace("T", "_")
+      .slice(0, 15);
     const formData = new FormData();
     formData.append("folderStructure", folderStructureTrailerVideo);
-    formData.append("keyName", event.target.files[0]?.name);
+    formData.append("keyName", `${timestamp}_${event.target.files[0]?.name}`);
     formData.append("content", event.target.files[0]);
     const uploadUrl = baseURL + `file/upload-file`;
 
@@ -543,7 +552,7 @@ const CartoonForm = (props) => {
   };
 
   // //insert function
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(videoType, genres.length);
 
     if (
@@ -671,12 +680,16 @@ const CartoonForm = (props) => {
       //   dispatch({ type: FILE_UPLOAD_SUCCESS, payload: objData });
       // }
 
-      props.createManual(objData);
+      const result = await props.createManual(objData); // ✅ Await the dispatch
+
+      if (result.success) {
+        history.push("/admin/cartoon"); // ✅ Redirect only on success
+      } else {
+        // No redirect — optional UI alert or error message already handled by Toast
+        console.warn("Stay on form — something went wrong.");
+      }
     }
 
-    setTimeout(() => {
-      history.push("/admin/cartoon");
-    }, 3000);
     // }
   };
   const handleUpdate = (id) => {

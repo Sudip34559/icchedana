@@ -64,14 +64,11 @@ const TrailerForm = (props) => {
   });
 
   const tmdbId = JSON.parse(localStorage.getItem("updateMovieData1"));
-  
+
   const { movie: movieList } = useSelector((state) => state.movie);
-
-
 
   //Set Value For Update
   useEffect(() => {
-   
     setName(dialogData?.name);
     setType(dialogData?.type);
     setMongoId(dialogData?._id);
@@ -94,8 +91,7 @@ const TrailerForm = (props) => {
       setVideoUrl(dialogData?.videoUrl);
     }
     setVideoPath(dialogData?.videoUrl);
-  }, [dialogData]);
-
+  }, []);
 
   //useEffect for getmovie
   useEffect(() => {
@@ -125,8 +121,6 @@ const TrailerForm = (props) => {
 
       return setError({ ...error });
     } else {
-      
-
       if (dialogData) {
         if (resURL?.trailerImageResURL || resURL?.trailerVideoResURL) {
           const objData = {
@@ -139,6 +133,8 @@ const TrailerForm = (props) => {
             trailerImage: resURL?.trailerImageResURL,
             videoUrl: videoType == 0 ? videoUrl : resURL?.trailerVideoResURL,
           };
+          console.log("dialog", objData);
+
           props.updateTrailer(objData, dialogData?._id);
         } else {
           const objData = {
@@ -186,6 +182,8 @@ const TrailerForm = (props) => {
       event.target.files[0],
       folderStructureTrailerImage
     );
+
+    console.log("img", resDataUrl, imageURL);
 
     setResURL({ ...resURL, trailerImageResURL: resDataUrl });
     setShowURL({ ...showURL, trailerImageShowURL: imageURL });

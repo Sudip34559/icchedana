@@ -472,20 +472,23 @@ exports.storeCartoon = async (req, res) => {
 //manual create music by admin
 exports.storeMusic = async (req, res) => {
   try {
+    console.log("req.body in storeMusic: ", req.body);
     if (
-      !req.body ||
       !req.body.title ||
       !req.body.year ||
       !req.body.description ||
       !req.body.region ||
       !req.body.genre ||
       !req.body.type ||
+      !req.body.runtime ||
+      !req.body.videoType ||
       !req.body.trailerVideoType ||
       !req.body.trailerType ||
       !req.body.trailerName ||
       !req.body.image ||
       !req.body.thumbnail ||
       !req.body.trailerImage ||
+      !req.body.link ||
       !req.body.trailerVideoUrl
     ) {
       return res
@@ -508,10 +511,12 @@ exports.storeMusic = async (req, res) => {
         .json({ status: false, message: "Genre does not found!" });
 
     const movie = new Movie();
-
+    movie.videoType = req.body.videoType;
+    movie.link = req.body.link;
     movie.image = req.body.image;
     movie.thumbnail = req.body.thumbnail;
     movie.title = req.body.title;
+    movie.runtime = req.body.runtime;
     movie.year = req.body.year;
     movie.description = req.body.description;
     movie.type = req.body.type;
@@ -2369,7 +2374,7 @@ exports.getAllTopRated = async (req, res) => {
         },
       },
       { $sort: { ratingAverage: -1 } },
-      { $limit: 10 },
+      { $limit: 100 },
     ]);
 
     return res.status(200).json({ status: true, message: "Success!", movie });

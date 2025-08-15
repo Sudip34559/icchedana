@@ -48,6 +48,8 @@ export const insertTrailer = (data) => (dispatch) => {
 
 //Update Trailer
 export const updateTrailer = (data, mongoId) => (dispatch) => {
+  console.log(data);
+
   axios
     .patch(`trailer/update?trailerId=${mongoId}`, data)
     .then((res) => {

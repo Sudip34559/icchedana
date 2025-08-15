@@ -16,10 +16,8 @@ const upload = multer({
     key: function (request, file, cb) {
       console.log("file in s3multer:     " + file);
       console.log("request in s3multer:  ", request.body);
-
       const folderStructure = request.body.folderStructure;
       const keyName = request.body.keyName;
-
       const Key = `${folderStructure}/${keyName}`;
       cb(null, Key);
     },

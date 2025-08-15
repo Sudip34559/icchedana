@@ -439,17 +439,21 @@ export const manualMusic = (files, data) => (dispatch) => {
 };
 
 export const createManual = (formData) => (dispatch) => {
-  axios
+  return axios
     .post("movie/createMusic", formData)
     .then((res) => {
       if (res.data.status) {
-        Toast("success", "Music Create  SuccessFully");
+        Toast("success", "Music Created Successfully");
         dispatch({ type: INSERT_MUSIC, payload: res.data.movie });
+        return { success: true }; // ✅ Return success
       } else {
         Toast("error", res.data.message);
+        return { success: false, message: res.data.message }; // ❌ Return failure
       }
     })
     .catch((error) => {
       console.log("error", error);
+      Toast("error", "Something went wrong.");
+      return { success: false, message: error.message }; // ❌ Catch block
     });
 };

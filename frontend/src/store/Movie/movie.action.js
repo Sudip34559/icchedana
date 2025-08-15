@@ -154,7 +154,6 @@ export const viewDetails = (movieId) => (dispatch) => {
   apiInstanceFetch
     .get(`movie/details?movieId=${movieId}`)
     .then((result) => {
-      
       dispatch({ type: MOVIE_DETAILS, payload: result.movie });
     })
     .catch((error) => {
@@ -480,18 +479,22 @@ export const loadMovieData = (tmdbId, tmdbTitle) => (dispatch) => {
 };
 
 export const createManual = (formData) => (dispatch) => {
-  axios
+  return axios
     .post("movie/create", formData)
     .then((res) => {
       if (res.data.status) {
-        Toast("success", "Movie Create  SuccessFully");
+        Toast("success", "Movie Created Successfully");
         dispatch({ type: INSERT_MOVIE, payload: res.data.movie });
+        return { success: true }; // ✅ Return success
       } else {
         Toast("error", res.data.message);
+        return { success: false, message: res.data.message }; // ❌ Return failure
       }
     })
     .catch((error) => {
       console.log("error", error);
+      Toast("error", "Something went wrong.");
+      return { success: false, message: error.message }; // ❌ Catch block
     });
 };
 

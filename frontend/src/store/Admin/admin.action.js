@@ -48,7 +48,7 @@ export const login = (details) => (dispatch) => {
         dispatch({
           type: OPEN_ADMIN_TOAST,
           payload: {
-            data: "You have successfully login in Mova.",
+            data: "You have successfully login in Icchedana.",
             for: "insert",
           },
         });
@@ -56,7 +56,6 @@ export const login = (details) => (dispatch) => {
         dispatch({ type: SET_ADMIN, payload: res.data.token });
       } else {
         Toast("error", res.data.message);
-       
       }
     })
     .catch(({ response }) => {
@@ -88,7 +87,6 @@ export const updateImage = (image) => (dispatch) => {
   axios
     .patch(`/admin/updateImage`, image)
     .then((res) => {
-     
       if (res.data.status) {
         dispatch({ type: UPDATE_PROFILE, payload: res.data.admin });
         dispatch({
@@ -109,7 +107,6 @@ export const updateProfile = (content) => (dispatch) => {
   axios
     .patch(`/admin`, content)
     .then((res) => {
-     
       dispatch({ type: UPDATE_PROFILE_NAME, payload: res.data.admin });
       dispatch({
         type: OPEN_ADMIN_TOAST,
@@ -125,7 +122,6 @@ export const sendEmail = (content) => (dispatch) => {
   axios
     .post("admin/forgetPassword", content)
     .then((res) => {
-     
       if (res.data.status) {
         // dispatch({
         //   type: OPEN_ADMIN_TOAST,

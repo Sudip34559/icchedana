@@ -439,17 +439,21 @@ export const manualCartoon = (files, data) => (dispatch) => {
 };
 
 export const createManual = (formData) => (dispatch) => {
-  axios
+  return axios
     .post("movie/createCartoon", formData)
     .then((res) => {
       if (res.data.status) {
-        Toast("success", "Cartoon Create  SuccessFully");
+        Toast("success", "Cartoon Created Successfully");
         dispatch({ type: INSERT_CARTOON, payload: res.data.movie });
+        return { success: true }; // ✅ Return success
       } else {
         Toast("error", res.data.message);
+        return { success: false, message: res.data.message }; // ❌ Return failure
       }
     })
     .catch((error) => {
       console.log("error", error);
+      Toast("error", "Something went wrong.");
+      return { success: false, message: error.message }; // ❌ Catch block
     });
 };
